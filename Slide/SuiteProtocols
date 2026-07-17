@@ -1,0 +1,449 @@
+
+# 📘 DOCUMENTO DI STUDIO COMPLETO — *Standard Suite, ISO/OSI vs TCP/IP*  
+*(rielaborato in italiano, completo, studiabile, con mappe e schemi)*
+
+---
+
+# **1. Comunicazione e standard**
+
+La comunicazione tra nodi diversi — spesso basati su hardware e software eterogenei — richiede **standard**.
+
+Esistono due modi storici per arrivare a uno standard:
+
+### **De jure**
+- definito da enti ufficiali (ISO, ITU, IEEE);
+- formalizzato, documentato, approvato tramite comitati.
+
+### **De facto**
+- adottato spontaneamente dal mercato;
+- prevale perché funziona, è semplice, è disponibile.
+
+La storia delle reti vede **due standard concorrenti**:
+
+- **ISO/OSI** → de jure  
+- **TCP/IP** → de facto
+
+---
+
+# **2. ISO/OSI — il modello a 7 livelli**
+
+L’ISO (International Standard Organization) definì il modello **OSI (Open Systems Interconnection)** come standard universale per l’interconnessione di sistemi eterogenei.
+
+### **Obiettivo del modello**
+Separare chiaramente:
+- funzioni di elaborazione (applicazione);
+- funzioni di comunicazione (rete);
+- dettagli fisici del mezzo trasmissivo.
+
+---
+
+## **2.1 I sette livelli del modello OSI**
+
+```mermaid
+flowchart TB
+  A[7 Application]
+  P[6 Presentation]
+  S[5 Session]
+  T[4 Transport]
+  N[3 Network]
+  D[2 Data Link]
+  F[1 Physical]
+
+  A --> P --> S --> T --> N --> D --> F
+```
+
+---
+
+## **2.2 Livello 1 — Physical**
+
+Gestisce:
+- aspetti meccanici ed elettrici della trasmissione;
+- codifica dei bit;
+- connettori, tensioni, frequenze.
+
+---
+
+## **2.3 Livello 2 — Data Link**
+
+Trasforma il canale fisico in una linea affidabile:
+
+- incapsulamento in frame;
+- controllo degli errori (ridondanza, parità);
+- controllo di flusso;
+- gestione dell’accesso al mezzo.
+
+---
+
+## **2.4 Livello 3 — Network**
+
+Responsabile di:
+- instradamento dei pacchetti;
+- gestione degli indirizzi;
+- routing tramite router.
+
+---
+
+## **2.5 Livello 4 — Transport**
+
+Garantisce:
+- comunicazione end‑to‑end;
+- affidabilità (ritrasmissioni, controllo errori);
+- gestione della sessione di trasporto.
+
+---
+
+## **2.6 Livello 5 — Session**
+
+Permette:
+- apertura, gestione e chiusura di sessioni;
+- sincronizzazione;
+- coordinamento tra applicazioni.
+
+---
+
+## **2.7 Livello 6 — Presentation**
+
+Gestisce:
+- formati dei dati (ASCII, Unicode, EBCDIC);
+- endianess (big/little);
+- compressione;
+- cifratura.
+
+---
+
+## **2.8 Livello 7 — Application**
+
+Offre servizi alle applicazioni:
+- FTP, HTTP, SMTP, SSH, ecc.
+
+---
+
+# **3. Formato dei messaggi (PDU)**
+
+Ogni livello aggiunge un proprio header:
+
+```mermaid
+flowchart TB
+  APP[Application header]
+  PRE[Presentation header]
+  SES[Session header]
+  TRA[Transport header]
+  NET[Network header]
+  DLL[Data Link header]
+  DAT[DATA]
+
+  APP --> PRE --> SES --> TRA --> NET --> DLL --> DAT
+```
+
+---
+
+# **4. TCP/IP — il modello a 4 livelli**
+
+Il modello TCP/IP è più semplice e più orientato alla pratica.
+
+```mermaid
+flowchart TB
+  APP2[Application]
+  TR2[Transport]
+  NW2[Network]
+  H2N[Host-to-Network]
+
+  APP2 --> TR2 --> NW2 --> H2N
+```
+
+---
+
+# **5. Confronto tra OSI e TCP/IP**
+
+| ISO/OSI (7 livelli) | TCP/IP (4 livelli) |
+|----------------------|---------------------|
+| Application          | Application         |
+| Presentation         | —                   |
+| Session              | —                   |
+| Transport            | Transport           |
+| Network              | Network             |
+| Data Link            | Host-to-Network     |
+| Physical             | Host-to-Network     |
+
+TCP/IP **accorpa** i livelli fisico + data link → *Host-to-Network*.
+
+```mermaid
+flowchart LR
+  subgraph OSI[ISO/OSI]
+    O7[Application] --> O6[Presentation] --> O5[Session] --> O4[Transport] --> O3[Network] --> O2[Data Link] --> O1[Physical]
+  end
+
+  subgraph TCPIP[TCP/IP]
+    T4[Application] --> T3[Transport] --> T2[Network] --> T1[Host-to-Network]
+  end
+
+  O2 -.-> T1
+  O1 -.-> T1
+```
+
+---
+
+# **6. Critiche ai modelli**
+
+## **Critiche a ISO/OSI**
+- tempismo sbagliato;
+- tecnologia non matura;
+- complessità eccessiva;
+- implementazioni lente;
+- modello imposto politicamente;
+- ridondanze e sovrapposizioni.
+
+## **Critiche a TCP/IP**
+- meno generale;
+- protocolli sviluppati ad hoc;
+- livelli non completamente separati;
+- assunzioni non sempre valide (es. congestione).
+
+---
+
+# **7. Perché TCP/IP ha vinto**
+
+### **Motivi tecnici**
+- implementazione open source su BSD negli anni ’80;
+- API socket BSD → facilità di sviluppo applicazioni;
+- funzionava bene, subito.
+
+### **Motivi storici**
+- OSI arrivò troppo tardi;
+- implementazioni OSI lente e incomplete;
+- TCP/IP era già diffuso e funzionante.
+
+---
+
+# **8. Internet — concetti fondamentali**
+
+Internet **non è**:
+- una singola rete;
+- gestita da un’unica entità;
+- centralizzata.
+
+Internet è:
+- un insieme di reti autonome;
+- collegate tramite router;
+- basata su store‑and‑forward e packet switching.
+
+```mermaid
+flowchart LR
+  H1[Host] --> R1[Router]
+  R1 --> R2[Router]
+  R2 --> H2[Host]
+  R1 --- N1[Rete autonoma A]
+  R2 --- N2[Rete autonoma B]
+```
+
+---
+
+# **9. Obiettivi di progettazione di Internet**
+
+### **Architettura**
+- collegare host e reti diverse.
+
+### **Tecniche di trasmissione**
+- store‑and‑forward;
+- packet switching.
+
+---
+
+# **10. Comunicazione logica**
+
+Due host comunicano tramite messaggi che attraversano:
+- router intermedi;
+- diversi link fisici;
+- diversi livelli della pila.
+
+---
+
+# **11. Architettura di Internet**
+
+Componenti:
+- host (PC, smartphone, TV…);
+- router;
+- link (rame, fibra, satellite).
+
+```mermaid
+flowchart LR
+  H[Host] --> L[Link]
+  L --> R[Router]
+  R --> L2[Link]
+  L2 --> H2[Host]
+  H --- H3[Host]
+  R --- R2[Router]
+```
+
+---
+
+# **12. Packet switching vs Circuit switching**
+
+## **Circuit switching**
+- risorse riservate end‑to‑end;
+- nessuna condivisione;
+- setup necessario;
+- prestazioni garantite.
+
+### **Tecniche**
+- FDM (divisione in frequenza)
+- TDM (divisione in tempo)
+
+## **Packet switching**
+- nessuna riserva;
+- risorse condivise;
+- pacchetti indipendenti;
+- store‑and‑forward;
+- congestione possibile.
+
+| Caratteristica | Circuit switching | Packet switching |
+|---|---|---|
+| Risorse | Riservate end-to-end | Condivise |
+| Setup | Necessario | Non necessario |
+| Unità trasmessa | Flusso continuo | Pacchetti |
+| Efficienza | Alta se il canale resta occupato | Alta con traffico a raffiche |
+| Problema tipico | Spreco di capacità | Congestione |
+
+---
+
+# **13. Multiplexing**
+
+## **Circuit switching**
+- TDM → slot temporali fissi  
+- FDM → bande di frequenza separate
+
+## **Packet switching**
+- **multiplexing statistico**  
+- su richiesta, non deterministico  
+- pacchetti in coda nei router
+
+```mermaid
+flowchart TB
+  subgraph CIRC[Circuit switching]
+    FDM[FDM: bande separate]
+    TDM[TDM: slot temporali fissi]
+    FDM --> RES[Risorsa dedicata]
+    TDM --> RES
+  end
+
+  subgraph PACK[Packet switching]
+    STAT[Multiplexing statistico]
+    QUEUE[Coda nei router]
+    STAT --> QUEUE
+  end
+```
+
+---
+
+# **14. Gestione dei conflitti**
+
+- pacchetti in competizione → buffer del router;
+- coda FIFO o con priorità;
+- congestione → buffer pieno → perdita pacchetti.
+
+---
+
+# **15. Metriche di performance**
+
+- **Bandwidth** → bit/s  
+  - Kbps  
+  - Mbps  
+  - Gbps  
+
+---
+
+# **16. Vantaggi del packet switching**
+
+Esempio:
+- link 1 Mbps  
+- ogni utente usa 0.1 Mbps  
+- attivo 10% del tempo
+
+### Circuit switching
+→ massimo 10 utenti
+
+### Packet switching
+→ 35 utenti con probabilità di conflitto minima (0.0004)
+
+---
+
+# **17. Analisi della pila TCP/IP — modello a clessidra**
+
+```mermaid
+flowchart TB
+  APP[Applicazioni\nFTP, SSH, SMTP, HTTP, DNS, DHCP, SNMP]
+  TR[Trasporto\nTCP, UDP]
+  IP[Rete\nIP, ICMP, OSPF, BGP, RSVP]
+  HN[H2N\nEthernet, WiFi, Token Ring, UMTS, Fiber Channel]
+
+  APP --> TR --> IP --> HN
+```
+
+Molti protocolli ai livelli estremi, pochi protocolli “core”.
+
+---
+
+# **18. Livello Host‑to‑Network (TCP/IP)**
+
+Include:
+- livello fisico;
+- livello data link.
+
+Esempi:
+- Ethernet  
+- Token Ring  
+- PPP  
+- 802.11  
+
+---
+
+# **19. Livello Network — IP**
+
+Servizi:
+- identificazione host (IP);
+- comunicazione logica;
+- routing.
+
+Caratteristiche:
+- connectionless;
+- best effort;
+- non affidabile (perdita, duplicazione, ritardi).
+
+---
+
+# **20. Livello Transport**
+
+Estende la comunicazione:
+- host → processi
+
+Servizi:
+- multiplexing/demultiplexing;
+- checksum.
+
+### **UDP**
+- connectionless  
+- leggero
+
+### **TCP**
+- connection‑oriented  
+- affidabile  
+- full‑duplex  
+- bufferizzazione
+
+| Protocollo | Connessione | Affidabilità | Note |
+|---|---|---|---|
+| UDP | No | No | Leggero e veloce |
+| TCP | Sì | Sì | Controllo di flusso e ritrasmissioni |
+
+---
+
+# **21. Livello Application**
+
+Esempi:
+- FTP  
+- SSH  
+- HTTP  
+- SMTP  
+- SNMP  
+- IRC  
+
