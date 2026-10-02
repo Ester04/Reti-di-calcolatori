@@ -7,6 +7,5 @@
 -  Laboratorio: su Socket (in C o Python) oppure sulla configurazione delle reti (Marionnet)
 > N.B. Si ha la possibilità di fare solo il test scritto, rispondendo, oltre alle domande di teoria, alle domande finali di laboratorio. In tal caso il voto massimo arriva a 27.
 
-
-  
-<b> <u> La cartella contiene solo degli appunti utili all'esame di laboratorio. </u> </b>
+<br> 
+<b> <u>La cartella contiene solo degli appunti utili all'esame di laboratorio.</u> </b>
