@@ -8,5 +8,5 @@
 > N.B. Si ha la possibilità di fare solo il test scritto, rispondendo, oltre alle domande di teoria, alle domande finali di laboratorio. In tal caso il voto massimo arriva a 27.
 
 <br> 
-*** La cartella contiene solo degli appunti utili all'esame di laboratorio. ***
+* La cartella contiene solo degli appunti utili all'esame di laboratorio. *
 
